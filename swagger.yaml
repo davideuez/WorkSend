@@ -1,24 +1,27 @@
 swagger: '2.0'
 info:
   version: '1.0'
-  title: "worksend"
-  description: Polls is a simple API allowing consumers to view polls and vote in them.
+  title: "WORKSEND"
+  description: Worksend is a RestAPI that allow teacher and students to have a 'virtual class' where look, send and share assignments
   license:
     name: MIT
     url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
-host: polls.apiblueprint.org
+    
+host: worksend.herokuapp.com
 basePath: /
 schemes:
-- http
+- https
 consumes:
 - application/json
 produces:
 - application/json
 paths:
-  /questions:
-    x-summary: Questions Collection
+  /classes:
+    x-summary: CLASSES
     get:
-      summary: List All Questions
+      description: >-
+        Here you can get all classes that are stored in the database
+      summary: Get all classes
       responses:
         200:
           description: Successful Response
@@ -28,23 +31,38 @@ paths:
               $ref: '#/definitions/Question'
           examples:
             application/json:
-              - question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 2048
-                  - choice: Python
-                    votes: 1024
-                  - choice: Objective-C
-                    votes: 512
-                  - choice: Ruby
-                    votes: 256
+              {
+                "count": 2,
+                "classes": [
+               {
+                  "name": "Organizzazione d'Impresa e Produzione Avanzata",
+                  "description": "Come da titolo",
+                  "keyword": 14281100,
+                  "_id": "5be1a47d62fd60064b8b33a7",
+                  "request": {
+                      "method": "GET",
+                      "description": "GET_SINGLE_CLASS_BY_ID",
+                      "url": "https://worksend.herokuapp.com/classes/5be1a47d62fd60064b8b33a7"
+                  }
+              },
+              {
+                  "name": "Organizzazione d'Impresa e Produzione Avanzata 13",
+                  "description": "Come da titolo 2",
+                  "keyword": 222222,
+                  "_id": "5be1a5696a358b065c8c0f06",
+                  "request": {
+                      "method": "GET",
+                      "description": "GET_SINGLE_CLASS_BY_ID",
+                      "url": "https://worksend.herokuapp.com/classes/5be1a5696a358b065c8c0f06"
+                  }
+              }
+          ]
+        }
     post:
       description: >-
-        You may create your own question using this action. It takes a JSON
-        object containing a question and a collection of answers in the
-        form of choices.
-      summary: Create a New Question
+        Here you can add a class, you just need to pass.
+        Keywords allow students to have access to classes
+      summary: Add a class
       parameters:
         - name: body
           in: body
@@ -55,37 +73,52 @@ paths:
         201:
           description: ''
           schema:
-            $ref: '#/definitions/Question'
+            $ref: '#/definitions/QuestionResponse'
           examples:
             application/json:
-                question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 0
-                  - choice: Python
-                    votes: 0
-                  - choice: Objective-C
-                    votes: 0
-                  - choice: Ruby
-                    votes: 0
+                message: You successfully added a new class
+                createdClass: 
+                  name: Information Technology
+                  description: Welcome to the class of IT
+                  keyword: 123456
+                  _id: "5be1b0fc93dfa606c272a8ca"
+                  request:
+                    method: "GET"
+                    description: "GET_CLASS_INFO"
+                    url: "http://worksend.herokuapp.com/classes/5be1b0fc93dfa606c272a8ca"
 definitions:
   Question:
     title: Question
     type: object
     properties:
-      question:
+      id:
+        type: number
+      name:
         type: string
-      published_at:
+      description:
         type: string
-      choices:
+      keyword:
+        type: number
+        
+        
+  QuestionResponse:
+    title: Question
+    type: object
+    properties:
+      id:
+        type: number
+      name:
+        type: string
+      description:
+        type: string
+      keyword:
+        type: number
+      request:
         type: array
-        items:
-          $ref: '#/definitions/Choice'
-    required:
-      - question
-      - published_at
-      - choices
+        
+            
+          
+        
   Choice:
     title: Choice
     type: object
@@ -98,23 +131,27 @@ definitions:
     required:
       - votes
       - choice
+      
+      
   QuestionRequest:
     title: Question Request
     type: object
     properties:
-      question:
+      name:
         type: string
-      choices:
-        type: array
-        items:
-          type: string
+      description:
+        type: string
+      keyword:
+        type: number
+        
     required:
-      - question
-      - choices
+      - name
+      - description
+      - keyword
     example:
-      question: Favourite programming language?
-      choices:
-        - Swift
-        - Python
-        - Objective-C
-        - Ruby
+      application/json:
+          {
+	            "name": "Programmazione 1",
+	            "description": "dawfawfdwfa",
+            	"keyword": 1234421
+          }
