@@ -5,6 +5,7 @@ A site where people can send assignments and do exams
 - Davide Uez
 - Luca Calearo
 - Dreni Denis
+- Paolo Stefanolli
 
 ### LINKS
 
