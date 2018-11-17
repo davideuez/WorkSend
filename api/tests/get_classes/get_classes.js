@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const url = "http://localhost:3000"
+const url = "https://worksend-develop.herokuapp.com"
 
 async function get(url) {
   console.log('getting ' + url)

@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const url = "http://localhost:3000/classes"
+const url = "https://worksend-develop.herokuapp.com/classes"
 
 it('works with get', async () => {
   expect.assertions(1)
