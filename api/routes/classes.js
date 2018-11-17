@@ -22,7 +22,7 @@ router.get('/', (req, res, next) => {
             request: {
               type: 'GET',
               description: 'GET_SINGLE_CLASS_BY_ID',
-              url: process.env.HEROKU + '/classes/' + doc._id
+              url: 'https://worksend.herokuapp.com/classes/' + doc._id
             }
           }
         })
@@ -60,7 +60,7 @@ router.post('/', (req, res, next) => {
           request: {
             type: 'GET',
             description: 'GET_CLASS_INFO',
-            url: 'http://localhost:3000/classes/' + result._id
+            url: 'https://worksend.herokuapp.com/classes/' + result._id
           }
         }
       });
@@ -88,7 +88,7 @@ router.get('/:classId', (req, res, next) => {
           request: {
             type: 'GET',
             description: 'GET_ALL_CLASSES',
-            url: 'http://localhost:3000/classes'
+            url: 'https://worksend.herokuapp.com/classes'
           }
         });
       } else
@@ -128,7 +128,7 @@ router.patch('/:classId', (req, res, next) => {
         request: {
           type: 'GET',
           description: 'GET_MODIFIED_CLASS',
-          url: 'http://localhost:3000/classes/' + id
+          url: 'https://worksend.herokuapp.com/classes/' + id
         }
       });
     })
