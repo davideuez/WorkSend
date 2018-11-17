@@ -1,15 +1,7 @@
 language: node_js
-env: 
-  global: 
-  - secure: ab1e5474-91a3-44d3-82fc-e28274c5051d
-after_success:
-  - wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
-  - git remote add heroku git@heroku.com:worksend.git
-  - echo "Host heroku.com" >> ~/.ssh/config
-  - echo "   StrictHostKeyChecking no" >> ~/.ssh/config
-  - echo "   CheckHostIP yes" >> ~/.ssh/config
-  - echo "   UserKnownHostsFile=/dev/null" >> ~/.ssh/config
-  - yes | heroku keys:add
-  - yes | git push heroku master
-node_js: 
-- 0.8
+node_js:
+- '8'
+deploy:
+  provider: heroku
+  api_key: ab1e5474-91a3-44d3-82fc-e28274c5051d  
+  app: worksend
