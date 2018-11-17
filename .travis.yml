@@ -3,5 +3,8 @@ node_js:
 - '8'
 deploy:
   provider: heroku
-  api_key: ab1e5474-91a3-44d3-82fc-e28274c5051d  
-  app: worksend
+  api_key:
+    secure: fRrWhztlEvWCqHaWsYRKpnVni6O8W16jywbxeqOXa6BDyMer+y9ouw+Z6DctpntMUHq/g7xkgFVKlDGnZrwNxFjoOAUFXO7bR2DV6Y1thVq9M0/E6hrz1lDvX53hNCUZQV4Kdk5FTDllExiNUAhglQkUbE7VvpHpwkkQGcTwn7EqEpNFW7OD/JrmbtF0JVnOl0dX2w/z4Vrqec6k3ijyBIi2H6xn6bkTB9klmwLjQIJVDhxdC18tSYJV+Tm26hABt3SfqctNl2nm1BLiAOfsmYkfNZVrTys0TnloPwVnytITDgX0R7FRyQRMX1CXnMX8d3JdCv8/T/UNX4lLho0Iq1HW6SWrxAL9nvWhHmhTXBaSQ0BPb7MNvHFJGQdQCY2kxhqnScUnFMzyxK5H1yVwXRBVP9ZagpKIj0/pfdQtad9F24GgqL/q6UaamfV5M1TG/bxU5LNnsr9a/DF2fLcwDI2omX0ugHOI7OYoj9sMRzWL4bTeDf/J4ZfADMzjZ6dmHjmOOaSYmeNbNxFIUQg2/ZjGuu9rLnU1LEonSK/wjdLnHpDUg9CdFMYXAt67lcAPC+pijHBfyZdEAQFMu6AARobInU1xH3yvp72Ruk8OTAMiFmox0Vz5Cy3ehqChqLwV0+By3L6YtGEPxPa1BLZ3Bx5hL5fdfBhuJ97NDQda8IE=
+  app: WorkSend
+  on:
+    repo: davideuez/WorkSend
