@@ -22,7 +22,7 @@ router.get('/', (req, res, next) => {
             request: {
               type: 'GET',
               description: 'GET_SINGLE_CLASS_BY_ID',
-              url: 'http://localhost:3000/classes/' + doc._id
+              url: process.env.HEROKU + '/classes/' + doc._id
             }
           }
         })
