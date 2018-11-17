@@ -18,9 +18,12 @@
   },
   "homepage": "https://github.com/davideuez/WorkSend#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.3.12"
   },
   "devDependencies": {
+    "morgan": "^1.9.1",
     "nodemon": "^1.18.6"
   }
 }
