@@ -3,6 +3,6 @@ node_js:
 - '8'
 deploy:
   provider: heroku
-  api_key: $HKEY
+  api_key: [secure]
+    secure: WUo6TRb/ojMO7fceXGGDzitPmj7m8mvI2nsDl+lTrWND53lTSdHuQ6c1AYZuZ7jwpmPh0as4Q24cROMPyCD0OTqjl/+e23uY3YD1QrEEAu60r5IC+s4N2Qvv2bN9HTLIK/1qpBkGVgq4dnIcnDZ8Lcsvt5TmMtqQrxD/mLG3LGdA8gRjVOytvJIWZIijaUdFMbcUhoO90tIbdt/fUN/zEU7urFiKSUgxFr+APKZ/ya5t3z5cs7jAACAfyNu4cLTPARlJdN5fWHLheX/+SGAdLfRokI7aLVPS5iXgIovlW8oYvU1kdfAtqLSNKyxazPr5zren3MfFwzeR5mBlqJLLVHKRRIZKNeb1S+gduav+t1mIOcH5C6qo23YyakSyqHPfRkTh/koesHQ8j7lAsIsLOx5jTAEIUnbO8QS4asNKf02/SjPWkKbhjT65oxt053y6f+kKAdDwlWb68kQ9OQRAWxuQW+0X1omRwBYxK+EoFZc1bfecDIvfHlSUfm1BQ3xwiC00IW3MBvQL4pzlJwvgbMC0qgFJ+c0SzYGHxjmmO4iKCfshLiVoaYVu7Ic32+EXLi9JKMls5FQxM3zzig8krICkEcyIJDZuiXeaEgObP36+bAZZbMfDk87ix6rnVNLmU3DnZO+Me4nEnR88HgY7REoYZSQzjkENPq1UPFGo7K8=
   app: worksend
-
