@@ -1,15 +1,12 @@
 const express = require('express');
 const app = express();
-const dotenv = require("dotenv");
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-dotenv.config({
-  path: './.env'
-});
 
 const classesRoute = require('./api/routes/classes');
+const userRoute = require('./api/routes/user');
 
 const db = mongoose.connect('mongodb://davide_uez:WorkSendPW@worksend-shard-00-00-l1h5a.mongodb.net:27017,worksend-shard-00-01-l1h5a.mongodb.net:27017,worksend-shard-00-02-l1h5a.mongodb.net:27017/Worksend_DB?ssl=true&replicaSet=WorkSend-shard-0&authSource=admin&retryWrites=true');
 
@@ -31,6 +28,7 @@ app.get('/', function (req, res) {
 });
 
 app.use('/classes', classesRoute);
+app.use('/user', userRoute);
 
 
 // Server in ascolto sulla porta ...

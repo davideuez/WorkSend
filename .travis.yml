@@ -3,5 +3,5 @@ node_js:
 - '8'
 deploy:
   provider: heroku
-  api_key: 63de055f-4cf2-4168-841f-32d39c52d325
+  api_key: $HEROKU_AUTH_TOKEN
   app: worksend

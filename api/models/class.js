@@ -4,7 +4,8 @@ const classSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   description: {
     type: String,
@@ -12,7 +13,8 @@ const classSchema = mongoose.Schema({
   },
   keyword: {
     type: Number,
-    required: true
+    required: true,
+    unique: true
   }
 });
 
