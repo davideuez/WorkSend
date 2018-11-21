@@ -87,7 +87,7 @@ router.post('/login', (req, res, next) => {
               email: users[0].email,
               userId: users[0]._id
             },
-            "" + process.env.JWT_KEY, {
+            "secretWRKSNDPW", {
               expiresIn: "1h"
             })
 
