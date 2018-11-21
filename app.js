@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 const classesRoute = require('./api/routes/classes');
 const userRoute = require('./api/routes/user');
+const assignmentsRoute = require('./api/routes/assignments');
 
 mongoose.connect(
   "mongodb://davide_uez:" +
@@ -32,6 +33,7 @@ app.get('/', function (req, res) {
 
 app.use('/classes', classesRoute);
 app.use('/user', userRoute);
+app.use('/assignments', assignmentsRoute);
 
 
 // Server in ascolto sulla porta ...

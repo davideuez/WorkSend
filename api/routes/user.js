@@ -30,7 +30,8 @@ router.post('/signup', (req, res, next) => {
             const userInfo = new User({
               _id: new mongoose.Types.ObjectId(),
               email: req.body.email,
-              password: hash
+              password: hash,
+              role: req.body.role
             });
 
             userInfo.save()
@@ -41,6 +42,7 @@ router.post('/signup', (req, res, next) => {
                     _id: result.id,
                     email: result.email,
                     password: result.password,
+                    role: result.role,
                     request: {
                       type: 'POST',
                       description: 'LOGIN',
