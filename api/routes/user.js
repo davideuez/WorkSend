@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
@@ -12,8 +13,8 @@ router.post('/signup', (req, res, next) => {
   User.find({
       email: req.body.email
     }).exec()
-    .then(user => {
-      if (user.length >= 1) {
+    .then(users => {
+      if (users.length >= 1) {
         return res.status(409).json({
           message: "E-mail already exists!"
         });
@@ -22,7 +23,7 @@ router.post('/signup', (req, res, next) => {
         bcrypt.hash(req.body.password, 10, (err, hash) => {
           if (err) {
             return res.status(500).json({
-              err: err
+              error: err
             });
           } else {
 
@@ -35,15 +36,15 @@ router.post('/signup', (req, res, next) => {
             userInfo.save()
               .then(result => {
                 res.status(201).json({
-                  message: "Succesfull POST requests to /users",
+                  message: "User succesfully created",
                   createdClass: {
                     _id: result.id,
                     email: result.email,
                     password: result.password,
                     request: {
-                      type: 'GET',
-                      description: 'GET_USER_INFO',
-                      url: 'https://worksend.herokuapp.com/users/' + result._id
+                      type: 'POST',
+                      description: 'LOGIN',
+                      url: 'https://worksend.herokuapp.com/login'
                     }
                   }
                 });
@@ -59,7 +60,54 @@ router.post('/signup', (req, res, next) => {
         });
       }
     })
+});
 
+// Login e assegnazione JWT
+
+router.post('/login', (req, res, next) => {
+  User.find({
+      email: req.body.email
+    })
+    .exec()
+    .then(users => {
+      if (users.length < 1) {
+        return res.status(401).json({
+          message: 'Auth failed'
+        });
+      }
+
+      bcrypt.compare(req.body.password, users[0].password, (err, result) => {
+        if (err) {
+          return res.status(401).json({
+            message: 'Auth failed'
+          });
+        }
+        if (result) {
+          const token = jwt.sign({
+              email: users[0].email,
+              userId: users[0]._id
+            },
+            "" + process.env.JWT_KEY, {
+              expiresIn: "1h"
+            })
+
+
+          return res.status(200).json({
+            message: 'Auth successfull',
+            token: token
+          });
+        }
+        return res.status(401).json({
+          message: 'Auth failed'
+        });
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
 });
 
 // Elimina un'utente dal database
