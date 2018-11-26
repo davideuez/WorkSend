@@ -1,157 +1,292 @@
 swagger: '2.0'
 info:
-  version: '1.0'
-  title: "WORKSEND"
-  description: Worksend is a RestAPI that allow teacher and students to have a 'virtual class' where look, send and share assignments
+  description: >-
+    This is an API that can be integrated by other developers in their web apps
+    to manage assignments delivery and exams. We are implemeting a platform
+    where teacher can post/modify/delete assignments for a certain class.
+    Students then have to send their assignments before the deadline `WorkSend
+    github repo:`  [WorkSend](https://github.com/davideuez/WorkSend)
+  version: 1.0.0
+  title: WorkSend
+  contact:
+    email: worksend.info@gmail.com
   license:
     name: MIT
-    url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
-    
+    url: 'https://github.com/davideuez/WorkSend/blob/master/LICENSE'
 host: worksend.herokuapp.com
-basePath: /
+basePath: /v1
+tags:
+  - name: USERS
+    description: 'operations to sign up, to sign in, and to delete users'
+  - name: CLASSES
+    description: operations to manage classes
+  - name: ASSIGNMENTS
+    description: operation for the professor to manage assignments
 schemes:
-- https
-consumes:
-- application/json
-produces:
-- application/json
+  - https
 paths:
-  /classes:
-    x-summary: CLASSES
-    get:
+  /user/signup:
+    post:
+      tags:
+        - USERS
+      summary: Add a new user in the DB
       description: >-
-        Here you can get all classes that are stored in the database
-      summary: Get all classes
+        Users have to provide a valid email, a password and their role (student
+        or professor)
+      operationId: addUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: User object that needs to be added to the DB
+          required: true
+          schema:
+            $ref: '#/definitions/User'
       responses:
-        200:
-          description: Successful Response
+        '201':
+          description: User successfully created
+        '409':
+          description: E-mail already exists
+        '500':
+          description: Internal Server Error
+  /user/login:
+    post:
+      tags:
+        - USERS
+      summary: Add a new user in the DB
+      description: >-
+        Users have to provide email and password to login and to have access to
+        resources
+      operationId: loginUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: User object that needs to be added to the DB
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: Auth successfull
+        '401':
+          description: Auth failed
+        '500':
+          description: Internal Server Error
+  /user/{user_id}:
+    delete:
+      tags:
+        - USERS
+      summary: Delete a user
+      description: Delete the user with the ID passed in the URL
+      operationId: deleteUser
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: User id to delete
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User successfuly deleted
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+  
+  /assignments:
+    get:
+      tags:
+        - ASSIGNMENTS
+      summary: Return all assignments
+      description: It returns an object's array of all assignments
+      operationId: findAllAssignments
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
           schema:
             type: array
             items:
-              $ref: '#/definitions/Question'
-          examples:
-            application/json:
-              {
-                "count": 2,
-                "classes": [
-               {
-                  "name": "Organizzazione d'Impresa e Produzione Avanzata",
-                  "description": "Come da titolo",
-                  "keyword": 14281100,
-                  "_id": "5be1a47d62fd60064b8b33a7",
-                  "request": {
-                      "method": "GET",
-                      "description": "GET_SINGLE_CLASS_BY_ID",
-                      "url": "https://worksend.herokuapp.com/classes/5be1a47d62fd60064b8b33a7"
-                  }
-              },
-              {
-                  "name": "Organizzazione d'Impresa e Produzione Avanzata 13",
-                  "description": "Come da titolo 2",
-                  "keyword": 222222,
-                  "_id": "5be1a5696a358b065c8c0f06",
-                  "request": {
-                      "method": "GET",
-                      "description": "GET_SINGLE_CLASS_BY_ID",
-                      "url": "https://worksend.herokuapp.com/classes/5be1a5696a358b065c8c0f06"
-                  }
-              }
-          ]
-        }
+              $ref: "#/definitions/Assignment"
+        '500':
+          description: Internal Server Error
+
     post:
+      tags:
+        - ASSIGNMENTS
+      summary: Add a new assignment in the DB
       description: >-
-        Here you can add a class, you just need to pass.
-        Keywords allow students to have access to classes
-      summary: Add a class
+        The owner of the class create a new assignment
+      operationId: createAssignment
+      consumes:
+        - application/json
+      produces:
+        - application/json
       parameters:
-        - name: body
-          in: body
+        - in: body
+          name: body
+          description: Assignment object that needs to be added to the DB
           required: true
           schema:
-            $ref: '#/definitions/QuestionRequest'
+            $ref: '#/definitions/Assignment'
       responses:
-        201:
-          description: ''
+        '201':
+          description: Successfully added the assignment
           schema:
-            $ref: '#/definitions/QuestionResponse'
-          examples:
-            application/json:
-                message: You successfully added a new class
-                createdClass: 
-                  name: Information Technology
-                  description: Welcome to the class of IT
-                  keyword: 123456
-                  _id: "5be1b0fc93dfa606c272a8ca"
+            type: object
+            properties: 
+              message: 
+                type: string
+                description: "Succesfully added the assignment"
+              createdClass:
+                type: object
+                properties: 
+                  title: 
+                    type: string
+                  description:
+                    type: string
+                  deadline:
+                    type: string
+                  url:
+                    type: string
+                  _id:
+                    type: string
                   request:
-                    method: "GET"
-                    description: "GET_CLASS_INFO"
-                    url: "http://worksend.herokuapp.com/classes/5be1b0fc93dfa606c272a8ca"
-definitions:
-  Question:
-    title: Question
-    type: object
-    properties:
-      id:
-        type: number
-      name:
-        type: string
-      description:
-        type: string
-      keyword:
-        type: number
-        
-        
-  QuestionResponse:
-    title: Question
-    type: object
-    properties:
-      id:
-        type: number
-      name:
-        type: string
-      description:
-        type: string
-      keyword:
-        type: number
-      request:
-        type: array
-        
-            
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        description: "Type of request that may help"
+                      description:
+                        type: string
+                        description: "Get Assignment Info"
+                      url:
+                        type: string
+                        description: "URL with Assignment Id"
+        '500':
+          description: Internal Server Error
           
-        
-  Choice:
-    title: Choice
+  /assignments/{assignment_id}:        
+    get:
+      tags:
+        - ASSIGNMENTS
+      summary: Return a specific assignment
+      description: Return the assignment with the ID passed by the URL
+      operationId: getAssignment
+      produces:
+        - application/json
+      parameters:
+        - name: assignment_id
+          in: path
+          description: ID to get a specific assignment
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successfully found the assignment
+          schema:
+            type: object
+            properties: 
+              class:
+                type: object
+                properties: 
+                  _id: 
+                    type: string
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  deadline:
+                    type: string
+                  url:
+                    type: string
+                  request:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        description: "Type of request that may help"
+                      description:
+                        type: string
+                        description: "Get Assignment Info"
+                      url:
+                        type: string
+                        description: "URL with Assignment Id"
+        '404':
+          description: Assignment not found
+        '500':
+          description: Internal Server Error 
+          
+  
+definitions:
+  User:
     type: object
-    properties:
-      votes:
-        type: integer
-        format: int32
-      choice:
-        type: string
     required:
-      - votes
-      - choice
-      
-      
-  QuestionRequest:
-    title: Question Request
-    type: object
+      - email
+      - password
     properties:
-      name:
+      _id:
         type: string
-      description:
+        description: It is the random ID given by MongoDB
+      email:
         type: string
-      keyword:
-        type: number
-        
+        example: test@gmail.com
+      password:
+        type: string
+        description: Password that will be encoded
+  Class:
+    type: object
     required:
       - name
       - description
       - keyword
-    example:
-      application/json:
-          {
-	            "name": "Programmazione 1",
-	            "description": "dawfawfdwfa",
-            	"keyword": 1234421
-          }
+    properties:
+      _id:
+        type: string
+        description: It is the random ID given by MongoDB
+      name:
+        type: string
+        example: Math 2
+      description:
+        type: string
+      keyword:
+        type: integer
+        description: A 6 digit number that is needed to enter the class
+  Assignment:
+    type: object
+    required:
+      - title
+      - url
+      - deadline
+    properties:
+      _id:
+        type: string
+        description: It is the random ID given by MongoDB
+      title:
+        type: string
+        example: Exercises on square root
+      description:
+        type: string
+      deadline:
+        type: object
+        properties:
+          year:
+            type: integer
+          month:
+            type: integer
+          day:
+            type: integer
+      url:
+        type: string
+        description: The url to the Google Drive folder of the assignment
+  
