@@ -3,6 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const Class = require('../models/class');
+const User = require('../models/user')
+const userClass = require('../models/userClass');
 
 // Ritorna l'intera lista di classi presenti
 
@@ -48,31 +50,63 @@ router.post('/', (req, res, next) => {
     keyword: req.body.keyword
   });
 
-  classInfo.save()
-    .then(result => {
-      res.status(201).json({
-        message: "Handling POST requests to /classes",
-        createdClass: {
-          name: result.name,
-          description: result.description,
-          keyword: result.keyword,
-          _id: result._id,
-          request: {
-            type: 'GET',
-            description: 'GET_CLASS_INFO',
-            url: 'https://worksend.herokuapp.com/classes/' + result._id
-          }
-        }
-      });
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-    });
+  const userClassInfo = new userClass({
+    _id: new mongoose.Types.ObjectId(),
+    classId: classInfo._id,
+    user_email: req.body.email,
+    role: 'Professor'
+  });
 
+  User.find({
+      email: userClassInfo.user_email
+    })
+    .exec()
+    .then(users => {
+      if (users.length < 1) {
+        return res.status(404).json({
+          message: 'User email not found'
+        });
+      } else {
+        classInfo.save()
+          .then(result => {
+
+            userClassInfo.save()
+              .then()
+              .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                  error: err
+                });
+              });
+
+
+            res.status(201).json({
+              message: "Handling POST requests to /classes",
+              createdClass: {
+                name: result.name,
+                description: result.description,
+                keyword: result.keyword,
+                professor: userClassInfo.user_email,
+                _id: result._id,
+                request: {
+                  type: 'GET',
+                  description: 'GET_CLASS_INFO',
+                  url: 'https://worksend.herokuapp.com/classes/' + result._id
+                }
+              }
+            });
+
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({
+              error: err
+            });
+          });
+      }
+    });
 });
+
 
 // Ritorna la classe con l'id passato come parametro
 
