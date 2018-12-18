@@ -19,7 +19,8 @@ router.post('/:assignmentId', (req, res, next) => {
   const deliveryInfo = new Delivery({
     _id: new mongoose.Types.ObjectId(),
     url: req.body.url,
-    deliveryId: req.params.delivery_Id
+    assignmentId: id,
+
   });
 
   Assignment.findById(id)
