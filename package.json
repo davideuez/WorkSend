@@ -22,6 +22,8 @@
     "body-parser": "^1.18.3",
     "event-stream": "^3.3.4",
     "express": "^4.16.4",
+    "file-system": "^2.2.2",
+    "googleapis": "^27.0.0",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.3.12",
     "morgan": "^1.9.1",

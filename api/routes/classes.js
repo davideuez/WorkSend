@@ -1,10 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const {
+  google
+} = require('googleapis');
 
 const Class = require('../models/class');
 const User = require('../models/user')
 const userClass = require('../models/userClass');
+
+const driveAPI = require('../../googleApi')
 
 // Ritorna l'intera lista di classi presenti
 
@@ -79,6 +84,7 @@ router.post('/', (req, res, next) => {
                 });
               });
 
+            driveAPI.classFolder();
 
             res.status(201).json({
               message: "Handling POST requests to /classes",
@@ -107,6 +113,72 @@ router.post('/', (req, res, next) => {
     });
 });
 
+router.post('/join/:classId', (req, res, next) => {
+  const id = req.params.classId;
+  const key = req.body.keyword;
+
+  const userClassInfo = new userClass({
+    _id: new mongoose.Types.ObjectId(),
+    classId: id,
+    user_email: req.body.email,
+    role: 'Student'
+  });
+
+  User.find({
+      email: userClassInfo.user_email
+    })
+    .exec()
+    .then(users => {
+      if (users.length < 1) {
+        return res.status(404).json({
+          message: 'User email not found'
+        });
+      } else {
+        Class.findById(id)
+          .select('name keyword _id')
+          .exec()
+          .then(doc => {
+            if (doc) {
+              if (doc.keyword == key) {
+
+                userClassInfo.save()
+                  .then()
+                  .catch(err => {
+                    console.log(err);
+                    res.status(500).json({
+                      error: err
+                    });
+                  });
+
+                res.status(200).json({
+                  message: 'You join successfully the class',
+                  class: doc,
+                  request: {
+                    type: 'GET',
+                    description: 'GET_ALL_CLASSES',
+                    url: 'https://worksend.herokuapp.com/classes'
+                  }
+                });
+              } else {
+                res.status(401).json({
+                  message: 'Wrong key entered'
+                });
+              }
+            } else
+              res.status(404).json({
+                message: 'Non ho trovato una classe con questo id'
+              });
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({
+              error: err
+            });
+          });
+      }
+
+    });
+});
 
 // Ritorna la classe con l'id passato come parametro
 
