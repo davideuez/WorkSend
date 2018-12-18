@@ -33,7 +33,7 @@ router.post('/:assignmentId', (req, res, next) => {
               message: "Successfully created the delivery ",
               createdDelivery: {
                 url: result.url,
-                assignmentId = result.assignmentId,
+                assignmentId: result.assignmentId,
               }
             });
           })
