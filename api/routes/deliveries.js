@@ -21,7 +21,7 @@ router.post('/:assignmentId', (req, res, next) => {
     .then(doc => {
       if (doc) {
         res.status(200).json({
-          message: "Assignment found"
+          message: "Delivery created"
         });
       } else
         res.status(404).json({
@@ -36,4 +36,22 @@ router.post('/:assignmentId', (req, res, next) => {
     });
 });
 
+router.delete('/:assignmentId', (req, res, next) => {
+
+    Delivery.remove({
+        _id: req.params.userId
+      })
+      .exec()
+      .then(result => {
+        res.status(200).json({
+          message: 'Delivery successfully deleted'
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
+      });
+  });
 module.exports = router;
