@@ -15,14 +15,34 @@ const driveAPI = require('../../googleApi')
 router.post('/:assignmentId', (req, res, next) => {
 
   const id = req.params.assignmentId;
+
+  const deliveryInfo = new Delivery({
+    _id: new mongoose.Types.ObjectId(),
+    url: req.body.url,
+    deliveryId: req.params.delivery_Id
+  });
+
   Assignment.findById(id)
     .select('_id title description deadline url')
     .exec()
     .then(doc => {
       if (doc) {
-        res.status(200).json({
-          message: "Delivery created"
-        });
+        deliverytInfo.save()
+          .then(result => {
+            res.status(201).json({
+              message: "Successfully created the delivery ",
+              createdDelivery: {
+                url: result.url,
+                assignmentId = result.assignmentId,
+              }
+            });
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({
+              error: err
+            });
+          });
       } else
         res.status(404).json({
           message: "I can't find an assignment with this id: " + id
@@ -40,6 +60,7 @@ router.post('/:assignmentId', (req, res, next) => {
 
 router.get('/:assignmentId/all', (req, res, next) => {
   const id = req.params.assignmentId;
+
   Assignment.findById(id)
     .select('_id title description deadline url')
     .exec()
@@ -68,10 +89,10 @@ router.get('/:assignmentId/all', (req, res, next) => {
 });
 
 
-router.delete('/:assignmentId', (req, res, next) => {
+router.delete('/:deliveryId', (req, res, next) => {
 
   Delivery.remove({
-      _id: req.params.userId
+      _id: req.params.deliveryId
     })
     .exec()
     .then(result => {
