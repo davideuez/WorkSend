@@ -79,7 +79,7 @@ paths:
           description: Auth failed
         '500':
           description: Internal Server Error
-  /user/{user_id}:
+  '/user/{user_id}':
     delete:
       tags:
         - USERS
@@ -101,7 +101,6 @@ paths:
           description: User not found
         '500':
           description: Internal Server Error
-  
   /assignments:
     get:
       tags:
@@ -117,16 +116,14 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/Assignment"
+              $ref: '#/definitions/Assignment'
         '500':
           description: Internal Server Error
-
     post:
       tags:
         - ASSIGNMENTS
       summary: Add a new assignment in the DB
-      description: >-
-        The owner of the class create a new assignment
+      description: The owner of the class create a new assignment
       operationId: createAssignment
       consumes:
         - application/json
@@ -144,14 +141,14 @@ paths:
           description: Successfully added the assignment
           schema:
             type: object
-            properties: 
-              message: 
+            properties:
+              message:
                 type: string
-                description: "Succesfully added the assignment"
+                description: Succesfully added the assignment
               createdClass:
                 type: object
-                properties: 
-                  title: 
+                properties:
+                  title:
                     type: string
                   description:
                     type: string
@@ -166,17 +163,16 @@ paths:
                     properties:
                       type:
                         type: string
-                        description: "Type of request that may help"
+                        description: Type of request that may help
                       description:
                         type: string
-                        description: "Get Assignment Info"
+                        description: Get Assignment Info
                       url:
                         type: string
-                        description: "URL with Assignment Id"
+                        description: URL with Assignment Id
         '500':
           description: Internal Server Error
-          
-  /assignments/{assignment_id}:        
+  '/assignments/{assignment_id}':
     get:
       tags:
         - ASSIGNMENTS
@@ -196,11 +192,11 @@ paths:
           description: Successfully found the assignment
           schema:
             type: object
-            properties: 
+            properties:
               class:
                 type: object
-                properties: 
-                  _id: 
+                properties:
+                  _id:
                     type: string
                   title:
                     type: string
@@ -215,19 +211,200 @@ paths:
                     properties:
                       type:
                         type: string
-                        description: "Type of request that may help"
+                        description: Type of request that may help
                       description:
                         type: string
-                        description: "Get Assignment Info"
+                        description: Get Assignment Info
                       url:
                         type: string
-                        description: "URL with Assignment Id"
+                        description: URL with Assignment Id
         '404':
           description: Assignment not found
         '500':
-          description: Internal Server Error 
+          description: Internal Server Error
+    patch:
+      tags:
+        - ASSIGNMENTS
+      summary: Modify a specific assignment
+      description: Modify the assignment with the ID passed by the URL
+      operationId: patchAssignment
+      produces:
+        - application/json
+      parameters:
+        - name: assignment_id
+          in: path
+          description: ID to get a specific assignment
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Column in the DB that will be changed
+          required: true
+          schema:
+            $ref: '#/definitions/update'
+      responses:
+        '200':
+          description: Assignment successfully updated
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              request:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    description: Type of request that may help
+                  description:
+                    type: string
+                    description: Get Modified Assignment
+                  url:
+                    type: string
+                    description: URL with Assignment Id
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - ASSIGNMENTS
+      summary: Delete an assignment
+      description: Delete the assignment with the ID passed in the URL
+      operationId: deleteAssignment
+      produces:
+        - application/json
+      parameters:
+        - name: assignment_id
+          in: path
+          description: Assignment to delete
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Assignment successfully deleted
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        '404':
+          description: Assignment not found
+        '500':
+          description: Internal Server Error
           
+  /classes:
+    get:
+      tags:
+        - CLASSES
+      summary: Return all classes
+      description: Return all classes in the DB
+      operationId: getClasses
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+              type: array
+              items:
+                $ref: '#/definitions/Class'
+        '500':
+          description: Internal Server Error
+          
+    post:
+      tags:
+        - CLASSES
+      summary: Create a class
+      description: Create a class in the DB
+      operationId: createClasses
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: User object that needs to be added to the DB
+          required: true
+          schema:
+            $ref: '#/definitions/Class'
+      responses:
+        '201':
+          //DA COMPLETARE
+        '500':
+          description: Internal Server Error
   
+  '/classes/{class_id}':
+    get:
+      tags:
+        - CLASSES
+      summary: Return a specific class
+      description: Return a specific class in the DB
+      operationId: getClass
+      produces:
+        - application/json
+      parameters:
+        - name: class_id
+          in: path
+          description: ID to get a specific class
+          required: true
+          type: string
+      responses:
+      '200':
+        //DA COMPLETARE
+      '404':
+          description: Class not found
+      '500':
+          description: Internal Server Error
+          
+    patch:
+      tags:
+        - CLASSES
+      summary: Modify a specific class
+      description: Modify the class with the ID passed by the URL
+      operationId: patchClass
+      produces:
+        - application/json
+      parameters:
+        - name: class_id
+          in: path
+          description: ID to get a specific class
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Column in the DB that will be changed
+          required: true
+          schema:
+            $ref: '#/definitions/update2'
+      responses:
+        '200':
+          //DA COMPLETARE
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - CLASSES
+      summary: Delete a class
+      description: Delete the class with the ID passed in the URL
+      operationId: deleteClass
+      produces:
+        - application/json
+      parameters:
+        - name: class_id
+          in: path
+          description: Class to delete
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Class successfully deleted
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        '404':
+          description: Class not found
+        '500':
+          description: Internal Server Error
 definitions:
   User:
     type: object
@@ -289,4 +466,29 @@ definitions:
       url:
         type: string
         description: The url to the Google Drive folder of the assignment
-  
+  update:
+    type: object
+    required:
+      - propName
+      - value
+    properties:
+      propName:
+        type: string
+        description: Column name
+        example: title
+      value:
+        type: string
+        example: New Assignment
+  update2:
+    type: object
+    required:
+      - propName
+      - value
+    properties:
+      propName:
+        type: string
+        description: Column name
+        example: title
+      value:
+        type: string
+        example: New Assignment
