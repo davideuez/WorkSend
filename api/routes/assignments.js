@@ -40,14 +40,15 @@ router.get('/', (req, res, next) => {
 
 // Crea un' assignment
 
-router.post('/', (req, res, next) => {
+router.post('/:class_Id', (req, res, next) => {
 
   const assignmentInfo = new Assignment({
     _id: new mongoose.Types.ObjectId(),
     title: req.body.title,
     description: req.body.description,
     deadline: new Date(req.body.deadline),
-    url: req.body.url
+    url: req.body.url,
+    classId: req.params.class_Id
   });
 
   assignmentInfo.save()
