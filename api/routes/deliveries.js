@@ -35,7 +35,7 @@ router.post('/:assignmentId', (req, res, next) => {
       });
     });
 });
- 
+
 //Returns all the URLs of all deliveries of a specific assignment
 
 router.get('/:assignmentId/all', (req, res, next) => {
@@ -70,20 +70,21 @@ router.get('/:assignmentId/all', (req, res, next) => {
 
 router.delete('/:assignmentId', (req, res, next) => {
 
-    Delivery.remove({
-        _id: req.params.userId
-      })
-      .exec()
-      .then(result => {
-        res.status(200).json({
-          message: 'Delivery successfully deleted'
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({
-          error: err
-        });
+  Delivery.remove({
+      _id: req.params.userId
+    })
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: 'Delivery successfully deleted'
       });
-  });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+});
+
 module.exports = router;
