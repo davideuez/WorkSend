@@ -27,7 +27,7 @@ router.post('/:assignmentId', (req, res, next) => {
     .exec()
     .then(doc => {
       if (doc) {
-        deliverytInfo.save()
+        deliveryInfo.save()
           .then(result => {
             res.status(201).json({
               message: "Successfully created the delivery ",
