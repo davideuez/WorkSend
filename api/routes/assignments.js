@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const Assignment = require('../models/assignment');
 
+
 // Ritorna l'intera lista di assignments presenti
 
 router.get('/', (req, res, next) => {
@@ -83,6 +84,39 @@ router.post('/:class_Id', (req, res, next) => {
 router.get('/:assignmentId', (req, res, next) => {
   const id = req.params.assignmentId;
   Assignment.findById(id)
+    .select('_id title description deadline url')
+    .exec()
+    .then(doc => {
+      if (doc) {
+        res.status(200).json({
+          class: doc,
+          request: {
+            type: 'GET',
+            description: 'GET_ALL_ASSIGNMENTS',
+            url: 'https://worksend.herokuapp.com/assignments'
+          }
+        });
+      } else
+        res.status(404).json({
+          message: "I can't find an assignment with this id: " + id
+        });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+
+});
+
+//Returns all assignments of a specific class
+
+router.get('/:classId/all', (req, res, next) => {
+  const id = req.params.classId;
+  Assignment.find({
+    classId: id
+  })
     .select('_id title description deadline url')
     .exec()
     .then(doc => {
