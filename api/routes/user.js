@@ -42,12 +42,7 @@ router.post('/signup', (req, res, next) => {
                     _id: result.id,
                     email: result.email,
                     password: result.password,
-                    role: result.role,
-                    request: {
-                      type: 'POST',
-                      description: 'LOGIN',
-                      url: 'https://worksend.herokuapp.com/login'
-                    }
+                    role: result.role
                   }
                 });
               })

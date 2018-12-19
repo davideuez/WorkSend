@@ -25,12 +25,7 @@ router.get('/', (req, res, next) => {
             name: doc.name,
             description: doc.description,
             keyword: doc.keyword,
-            _id: doc._id,
-            request: {
-              type: 'GET',
-              description: 'GET_SINGLE_CLASS_BY_ID',
-              url: 'https://worksend.herokuapp.com/classes/' + doc._id
-            }
+            _id: doc._id
           }
         })
       }
@@ -93,12 +88,7 @@ router.post('/', (req, res, next) => {
                 description: result.description,
                 keyword: result.keyword,
                 professor: userClassInfo.user_email,
-                _id: result._id,
-                request: {
-                  type: 'GET',
-                  description: 'GET_CLASS_INFO',
-                  url: 'https://worksend.herokuapp.com/classes/' + result._id
-                }
+                _id: result._id
               }
             });
 
@@ -152,12 +142,7 @@ router.post('/join/:classId', (req, res, next) => {
 
                 res.status(200).json({
                   message: 'You join successfully the class',
-                  class: doc,
-                  request: {
-                    type: 'GET',
-                    description: 'GET_ALL_CLASSES',
-                    url: 'https://worksend.herokuapp.com/classes'
-                  }
+                  class: doc
                 });
               } else {
                 res.status(401).json({
@@ -190,12 +175,7 @@ router.get('/:classId', (req, res, next) => {
     .then(doc => {
       if (doc) {
         res.status(200).json({
-          class: doc,
-          request: {
-            type: 'GET',
-            description: 'GET_ALL_CLASSES',
-            url: 'https://worksend.herokuapp.com/classes'
-          }
+          class: doc
         });
       } else
         res.status(404).json({
@@ -230,12 +210,7 @@ router.patch('/:classId', (req, res, next) => {
     .exec()
     .then(result => {
       res.status(200).json({
-        message: 'Classe aggiornata con successo',
-        request: {
-          type: 'GET',
-          description: 'GET_MODIFIED_CLASS',
-          url: 'https://worksend.herokuapp.com/classes/' + id
-        }
+        message: 'Classe aggiornata con successo'
       });
     })
     .catch(err => {
