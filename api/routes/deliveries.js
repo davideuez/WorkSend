@@ -56,7 +56,7 @@ router.post('/:assignmentId', (req, res, next) => {
     });
 });
 
-//Returns all the URLs of all deliveries of a specific assignment
+//Ritorna tutti URLs di tutti deliveries di uno specifico assignment
 
 router.get('/:assignmentId/all', (req, res, next) => {
   const id = req.params.assignmentId;
