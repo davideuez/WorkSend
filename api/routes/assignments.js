@@ -20,12 +20,7 @@ router.get('/', (req, res, next) => {
             title: doc.title,
             description: doc.description,
             deadline: doc.deadline,
-            url: doc.url,
-            request: {
-              type: 'GET',
-              description: 'GET_SINGLE_ASSIGNMENT_BY_ID',
-              url: 'https://worksend.herokuapp.com/assignments/' + doc._id
-            }
+            url: doc.url
           }
         })
       }
@@ -61,12 +56,7 @@ router.post('/:class_Id', (req, res, next) => {
           description: result.description,
           deadline: result.deadline,
           url: result.url,
-          _id: result._id,
-          request: {
-            type: 'GET',
-            description: 'GET_ASSIGNMENT_INFO',
-            url: 'https://worksend.herokuapp.com/assignments/' + result._id
-          }
+          _id: result._id
         }
       });
     })
@@ -89,12 +79,7 @@ router.get('/:assignmentId', (req, res, next) => {
     .then(doc => {
       if (doc) {
         res.status(200).json({
-          class: doc,
-          request: {
-            type: 'GET',
-            description: 'GET_ALL_ASSIGNMENTS',
-            url: 'https://worksend.herokuapp.com/assignments'
-          }
+          class: doc
         });
       } else
         res.status(404).json({
@@ -115,19 +100,14 @@ router.get('/:assignmentId', (req, res, next) => {
 router.get('/:classId/all', (req, res, next) => {
   const id = req.params.classId;
   Assignment.find({
-    classId: id
-  })
+      classId: id
+    })
     .select('_id title description deadline url')
     .exec()
     .then(doc => {
       if (doc) {
         res.status(200).json({
-          class: doc,
-          request: {
-            type: 'GET',
-            description: 'GET_ALL_ASSIGNMENTS',
-            url: 'https://worksend.herokuapp.com/assignments'
-          }
+          class: doc
         });
       } else
         res.status(404).json({
@@ -162,12 +142,7 @@ router.patch('/:assignmentId', (req, res, next) => {
     .exec()
     .then(result => {
       res.status(200).json({
-        message: 'Assignment successfully updated',
-        request: {
-          type: 'GET',
-          description: 'GET_MODIFIED_ASSIGNMENT',
-          url: 'https://worksend.herokuapp.com/assignments/' + id
-        }
+        message: 'Assignment successfully updated'
       });
     })
     .catch(err => {
