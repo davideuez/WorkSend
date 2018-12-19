@@ -14,7 +14,7 @@ info:
     name: MIT
     url: 'https://github.com/davideuez/WorkSend/blob/master/LICENSE'
 host: worksend.herokuapp.com
-basePath: /v1
+basePath: /api/v1
 tags:
   - name: USERS
     description: 'operations to sign up, to sign in, and to delete users'
@@ -31,8 +31,7 @@ paths:
         - USERS
       summary: Add a new user in the DB
       description: >-
-        Users have to provide a valid email, a password and their role (student
-        or professor)
+        Users have to provide a valid email, a password
       operationId: addUser
       consumes:
         - application/json
@@ -467,7 +466,7 @@ paths:
           description: Assignment not found
         '500':
           description: Internal Server Error
-  '/deliveries/{assignment_id}':
+  /deliveries/{assignment_id}:
     post:
       tags:
         - DELIVERIES
@@ -477,14 +476,15 @@ paths:
       produces:
         - application/json
       parameters:
+        - name: deliveryInfo
+          in: body
+          description: User object that needs to be added to the DB
+          required: true
+          schema:
+            $ref: '#/definitions/Delivery'
         - name: assignment_id
           in: path
           description: ID to get a specific class
-          required: true
-          type: string
-        - name: url
-          in: body
-          description: URL of the Google Drive folder
           required: true
           type: string
       responses:
