@@ -153,25 +153,6 @@ router.patch('/:assignmentId', (req, res, next) => {
     });
 });
 
-// Elimina la classe in base all' id passato come parametro
 
-router.delete('/:assignmentId', (req, res, next) => {
-  const id = req.params.assignmentId
-  Assignment.remove({
-      _id: id
-    })
-    .exec()
-    .then(result => {
-      res.status(200).json({
-        message: 'Assignment successfully deleted'
-      });
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-    });
-});
 
 module.exports = router;
