@@ -10,10 +10,7 @@ const userRoute = require('./api/routes/user');
 const assignmentsRoute = require('./api/routes/assignments');
 const deliveriesRoute = require('./api/routes/deliveries');
 
-mongoose.connect(
-  "mongodb://davide_uez:" +
-  process.env.MONGO_ATLAS_PW +
-  "@worksend-shard-00-00-l1h5a.mongodb.net:27017,worksend-shard-00-01-l1h5a.mongodb.net:27017,worksend-shard-00-02-l1h5a.mongodb.net:27017/Worksend_DB?ssl=true&replicaSet=WorkSend-shard-0&authSource=admin&retryWrites=true");
+mongoose.connect("mongodb://davide_uez:" + process.env.MONGO_ATLAS_PW + "@worksend-shard-00-00-l1h5a.mongodb.net:27017,worksend-shard-00-01-l1h5a.mongodb.net:27017,worksend-shard-00-02-l1h5a.mongodb.net:27017/Worksend_DB?ssl=true&replicaSet=WorkSend-shard-0&authSource=admin&retryWrites=true");
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({
@@ -32,10 +29,10 @@ app.get('/', function (req, res) {
   res.send('You are in the main route!');
 });
 
-app.use('/classes', classesRoute);
-app.use('/users', userRoute);
-app.use('/assignments', assignmentsRoute);
-app.use('/deliveries', deliveriesRoute);
+app.use('/api/v1/classes', classesRoute);
+app.use('/api/v1/users', userRoute);
+app.use('/api/v1/assignments', assignmentsRoute);
+app.use('/api/v1/deliveries', deliveriesRoute);
 
 
 // Server in ascolto sulla porta ...
