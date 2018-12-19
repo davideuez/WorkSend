@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const Assignment = require('../models/assignment');
 
 
-// Ritorna l'intera lista di assignments presenti
+// Ritorna l'intera lista di assignments presenti 
 
 router.get('/', (req, res, next) => {
   Assignment.find()
@@ -95,7 +95,7 @@ router.get('/:assignmentId', (req, res, next) => {
 
 });
 
-//Returns all assignments of a specific class
+//Ritorna tutte gli assignment, passando come paramentro classId
 
 router.get('/:classId/all', (req, res, next) => {
   const id = req.params.classId;
