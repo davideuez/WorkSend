@@ -241,7 +241,7 @@ paths:
           description: Column in the DB that will be changed
           required: true
           schema:
-            $ref: '#/definitions/update'
+            $ref: '#/definitions/updateAssignment'
       responses:
         '200':
           description: Assignment successfully updated
@@ -290,7 +290,6 @@ paths:
           description: Assignment not found
         '500':
           description: Internal Server Error
-          
   /classes:
     get:
       tags:
@@ -304,12 +303,11 @@ paths:
         '200':
           description: successful operation
           schema:
-              type: array
-              items:
-                $ref: '#/definitions/Class'
+            type: array
+            items:
+              $ref: '#/definitions/Class'
         '500':
           description: Internal Server Error
-          
     post:
       tags:
         - CLASSES
@@ -326,11 +324,15 @@ paths:
           schema:
             $ref: '#/definitions/Class'
       responses:
-        '201':
-          //DA COMPLETARE
+        '201': 
+          description: Assignment successfully deleted
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
         '500':
           description: Internal Server Error
-  
   '/classes/{class_id}':
     get:
       tags:
@@ -347,13 +349,36 @@ paths:
           required: true
           type: string
       responses:
-      '200':
-        //DA COMPLETARE
-      '404':
+        '200':
+          description: URL with Class Id
+          schema:
+            type: object
+            properties:
+              class:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  keyword:
+                    type: integer
+                  request:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        description: Type of request that may help
+                      description:
+                        type: string
+                        description: Get Assignment Info
+                      url:
+                        type: string
+                        description: URL with Assignment Id
+        '404':
           description: Class not found
-      '500':
+        '500':
           description: Internal Server Error
-          
     patch:
       tags:
         - CLASSES
@@ -373,10 +398,27 @@ paths:
           description: Column in the DB that will be changed
           required: true
           schema:
-            $ref: '#/definitions/update2'
+            $ref: '#/definitions/updateClass'
       responses:
         '200':
-          //DA COMPLETARE
+          description: Class successfully updated
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              request:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    description: Type of request that may help
+                  description:
+                    type: string
+                    description: Get Modified Assignment
+                  url:
+                    type: string
+                    description: URL with Assignment Id
         '500':
           description: Internal Server Error
     delete:
@@ -403,6 +445,57 @@ paths:
                 type: string
         '404':
           description: Class not found
+        '500':
+          description: Internal Server Error
+  /deliveries:
+    get:
+      tags:
+        - DELIVERIES
+      summary: Return all deliveries
+      description: Return all deliveries in the DB
+      operationId: getDeliveries
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Delivery'
+        '404':
+          description: Assignment not found
+        '500':
+          description: Internal Server Error
+  '/deliveries/{assignment_id}':
+    post:
+      tags:
+        - DELIVERIES
+      summary: Create a delivery
+      description: Create a new delivery in the DB based on the Assignment ID
+      operationId: createDelivery
+      produces:
+        - application/json
+      parameters:
+        - name: assignment_id
+          in: path
+          description: ID to get a specific class
+          required: true
+          type: string
+        - name: url
+          in: body
+          description: URL of the Google Drive folder
+          required: true
+          type: string
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Delivery'
+        '404':
+          description: Assignment not found
         '500':
           description: Internal Server Error
 definitions:
@@ -438,6 +531,7 @@ definitions:
         type: string
       keyword:
         type: integer
+        uniqueItems: true
         description: A 6 digit number that is needed to enter the class
   Assignment:
     type: object
@@ -466,7 +560,8 @@ definitions:
       url:
         type: string
         description: The url to the Google Drive folder of the assignment
-  update:
+  updateAssignment:
+    description: For changing multiple values just pass an array of this objects
     type: object
     required:
       - propName
@@ -479,7 +574,8 @@ definitions:
       value:
         type: string
         example: New Assignment
-  update2:
+  updateClass:
+    description: For changing multiple values just pass an array of this objects
     type: object
     required:
       - propName
@@ -488,7 +584,22 @@ definitions:
       propName:
         type: string
         description: Column name
-        example: title
+        example: description
       value:
         type: string
-        example: New Assignment
+        example: New Class Description
+  Delivery:
+    type: object
+    required: 
+      - url
+      - assignmentId
+    properties:
+      _id: 
+        type: string
+        description: It is the random ID given by MongoDB
+      url:
+        type: string
+        description: The URL from Google Drive's folder
+      assignmentId:
+        type: string
+        description: The ID related to the specific assignment
