@@ -67,12 +67,7 @@ router.get('/:assignmentId/all', (req, res, next) => {
     .then(doc => {
       if (doc) {
         res.status(200).json({
-          class: doc,
-          request: {
-            type: 'GET',
-            description: 'GET_ALL_DELIVERIES',
-            url: 'https://worksend.herokuapp.com/assignments'
-          }
+          class: doc
         });
       } else
         res.status(404).json({
