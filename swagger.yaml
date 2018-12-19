@@ -25,7 +25,7 @@ tags:
 schemes:
   - https
 paths:
-  /assigment/v1/user/signup:
+  /user/signup:
     post:
       tags:
         - USERS
@@ -51,7 +51,7 @@ paths:
           description: E-mail already exists
         '500':
           description: Internal Server Error
-  /assigment/v1/user/login:
+  /user/login:
     post:
       tags:
         - USERS
@@ -78,7 +78,7 @@ paths:
           description: Auth failed
         '500':
           description: Internal Server Error
-  '/assigment/v1/user/{user_id}':
+  '/user/{user_id}':
     delete:
       tags:
         - USERS
@@ -100,7 +100,7 @@ paths:
           description: User not found
         '500':
           description: Internal Server Error
-  /assigment/v1/assignments:
+  /assignments:
     get:
       tags:
         - ASSIGNMENTS
@@ -171,7 +171,7 @@ paths:
                         description: URL with Assignment Id
         '500':
           description: Internal Server Error
-  '/assigment/v1/assignments/{assignment_id}':
+  '/assignments/{assignment_id}':
     get:
       tags:
         - ASSIGNMENTS
@@ -289,7 +289,34 @@ paths:
           description: Assignment not found
         '500':
           description: Internal Server Error
-  /assigment/v1/classes:
+  /assignments/{class_Id}/all:
+    get:
+      tags:
+        - ASSIGNMENTS
+      summary: Return all assignments of a specific class
+      description: Return all assignments with the class ID 
+      operationId: returnAssignments
+      produces:
+        - application/json
+      parameters:
+        - name: class_Id
+          in: path
+          description: Class to get all assignments
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Assignments succesfully retrieved
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Assignment'
+        '404':
+          description: Class not found
+        '500':
+          description: Internal Server Error
+  
+  /classes:
     get:
       tags:
         - CLASSES
@@ -332,7 +359,7 @@ paths:
                 type: string
         '500':
           description: Internal Server Error
-  '/assigment/v1/classes/{class_id}':
+  '/classes/{class_id}':
     get:
       tags:
         - CLASSES
@@ -446,7 +473,28 @@ paths:
           description: Class not found
         '500':
           description: Internal Server Error
-  /assigment/v1/deliveries:
+  /classes/join/{class_id}:
+    post:
+      tags:
+        - CLASSES
+      summary: Join a class
+      description: Join a class in the DB
+      operationId: joinClass
+      produces:
+        - application/json
+      parameters:
+        - name: class_id
+          in: path
+          description: User object that needs to be added to the class
+          required: true
+          type: string
+      responses:
+        '201': 
+          description: Class succesfully joined
+        '500':
+          description: Internal Server Error
+          
+  /deliveries:
     get:
       tags:
         - DELIVERIES
@@ -466,11 +514,7 @@ paths:
           description: Assignment not found
         '500':
           description: Internal Server Error
-<<<<<<< HEAD
   /deliveries/{assignment_id}:
-=======
-  '/assigment/v1/deliveries/{assignment_id}':
->>>>>>> develop
     post:
       tags:
         - DELIVERIES
