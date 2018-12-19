@@ -14,7 +14,7 @@ info:
     name: MIT
     url: 'https://github.com/davideuez/WorkSend/blob/master/LICENSE'
 host: worksend.herokuapp.com
-basePath: /v1
+basePath: /api/v1
 tags:
   - name: USERS
     description: 'operations to sign up, to sign in, and to delete users'
@@ -25,14 +25,13 @@ tags:
 schemes:
   - https
 paths:
-  /assigment/v1/user/signup:
+  /user/signup:
     post:
       tags:
         - USERS
       summary: Add a new user in the DB
       description: >-
-        Users have to provide a valid email, a password and their role (student
-        or professor)
+        Users have to provide a valid email, a password
       operationId: addUser
       consumes:
         - application/json
@@ -52,7 +51,7 @@ paths:
           description: E-mail already exists
         '500':
           description: Internal Server Error
-  /assigment/v1/user/login:
+  /user/login:
     post:
       tags:
         - USERS
@@ -79,7 +78,7 @@ paths:
           description: Auth failed
         '500':
           description: Internal Server Error
-  '/assigment/v1/user/{user_id}':
+  '/user/{user_id}':
     delete:
       tags:
         - USERS
@@ -101,7 +100,7 @@ paths:
           description: User not found
         '500':
           description: Internal Server Error
-  /assigment/v1/assignments:
+  /assignments:
     get:
       tags:
         - ASSIGNMENTS
@@ -172,7 +171,7 @@ paths:
                         description: URL with Assignment Id
         '500':
           description: Internal Server Error
-  '/assigment/v1/assignments/{assignment_id}':
+  '/assignments/{assignment_id}':
     get:
       tags:
         - ASSIGNMENTS
@@ -290,7 +289,34 @@ paths:
           description: Assignment not found
         '500':
           description: Internal Server Error
-  /assigment/v1/classes:
+  /assignments/classId/all:
+    get:
+      tags:
+        - ASSIGNMENTS
+      summary: Return all assignments of a specific class
+      description: Return all assignments with the class ID 
+      operationId: returnAssignments
+      produces:
+        - application/json
+      parameters:
+        - name: class_id
+          in: path
+          description: Class to get all assignments
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Assignments succesfully retrieved
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Assignment'
+        '404':
+          description: Class not found
+        '500':
+          description: Internal Server Error
+  
+  /classes:
     get:
       tags:
         - CLASSES
@@ -333,7 +359,7 @@ paths:
                 type: string
         '500':
           description: Internal Server Error
-  '/assigment/v1/classes/{class_id}':
+  '/classes/{class_id}':
     get:
       tags:
         - CLASSES
@@ -447,7 +473,28 @@ paths:
           description: Class not found
         '500':
           description: Internal Server Error
-  /assigment/v1/deliveries:
+  /classes/join/{class_id}:
+    post:
+      tags:
+        - CLASSES
+      summary: Join a class
+      description: Join a class in the DB
+      operationId: joinClass
+      produces:
+        - application/json
+      parameters:
+        - name: class_id
+          in: path
+          description: User object that needs to be added to the class
+          required: true
+          type: string
+      responses:
+        '201': 
+          description: Class succesfully joined
+        '500':
+          description: Internal Server Error
+          
+  /deliveries:
     get:
       tags:
         - DELIVERIES
@@ -467,7 +514,7 @@ paths:
           description: Assignment not found
         '500':
           description: Internal Server Error
-  '/assigment/v1/deliveries/{assignment_id}':
+  /deliveries/{assignment_id}:
     post:
       tags:
         - DELIVERIES
@@ -477,14 +524,15 @@ paths:
       produces:
         - application/json
       parameters:
+        - name: deliveryInfo
+          in: body
+          description: User object that needs to be added to the DB
+          required: true
+          schema:
+            $ref: '#/definitions/Delivery'
         - name: assignment_id
           in: path
           description: ID to get a specific class
-          required: true
-          type: string
-        - name: url
-          in: body
-          description: URL of the Google Drive folder
           required: true
           type: string
       responses:
