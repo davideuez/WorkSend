@@ -25,7 +25,7 @@ tags:
 schemes:
   - https
 paths:
-  /user/signup:
+  /assigment/v1/user/signup:
     post:
       tags:
         - USERS
@@ -52,7 +52,7 @@ paths:
           description: E-mail already exists
         '500':
           description: Internal Server Error
-  /user/login:
+  /assigment/v1/user/login:
     post:
       tags:
         - USERS
@@ -79,7 +79,7 @@ paths:
           description: Auth failed
         '500':
           description: Internal Server Error
-  '/user/{user_id}':
+  '/assigment/v1/user/{user_id}':
     delete:
       tags:
         - USERS
@@ -101,7 +101,7 @@ paths:
           description: User not found
         '500':
           description: Internal Server Error
-  /assignments:
+  /assigment/v1/assignments:
     get:
       tags:
         - ASSIGNMENTS
@@ -172,7 +172,7 @@ paths:
                         description: URL with Assignment Id
         '500':
           description: Internal Server Error
-  '/assignments/{assignment_id}':
+  '/assigment/v1/assignments/{assignment_id}':
     get:
       tags:
         - ASSIGNMENTS
@@ -290,7 +290,7 @@ paths:
           description: Assignment not found
         '500':
           description: Internal Server Error
-  /classes:
+  /assigment/v1/classes:
     get:
       tags:
         - CLASSES
@@ -333,7 +333,7 @@ paths:
                 type: string
         '500':
           description: Internal Server Error
-  '/classes/{class_id}':
+  '/assigment/v1/classes/{class_id}':
     get:
       tags:
         - CLASSES
@@ -447,7 +447,7 @@ paths:
           description: Class not found
         '500':
           description: Internal Server Error
-  /deliveries:
+  /assigment/v1/deliveries:
     get:
       tags:
         - DELIVERIES
@@ -467,7 +467,7 @@ paths:
           description: Assignment not found
         '500':
           description: Internal Server Error
-  '/deliveries/{assignment_id}':
+  '/assigment/v1/deliveries/{assignment_id}':
     post:
       tags:
         - DELIVERIES
