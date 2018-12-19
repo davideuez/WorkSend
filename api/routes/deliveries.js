@@ -103,4 +103,31 @@ router.delete('/:deliveryId', (req, res, next) => {
     });
 });
 
+// Ritorna una singola delivery
+
+router.get('/:deliveryId', (req, res, next) => {
+  const id = req.params.deliveryId;
+
+  Delivery.findById(id)
+    .select('_id url assignmentId')
+    .exec()
+    .then(doc => {
+      if (doc) {
+        res.status(200).json({
+          class: doc
+        });
+      } else
+        res.status(404).json({
+          message: "I can't find a delivery with this id: " + id
+        });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+
+});
+
 module.exports = router;
