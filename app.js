@@ -33,7 +33,7 @@ app.get('/', function (req, res) {
 });
 
 app.use('/classes', classesRoute);
-app.use('/user', userRoute);
+app.use('/users', userRoute);
 app.use('/assignments', assignmentsRoute);
 app.use('/deliveries', deliveriesRoute);
 
