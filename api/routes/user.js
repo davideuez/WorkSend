@@ -107,6 +107,25 @@ router.post('/login', (req, res, next) => {
     });
 });
 
+// Elimina un'utente dal database
 
+router.delete('/:userId', (req, res, next) => {
+
+  User.remove({
+      _id: req.params.userId
+    })
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: 'User successfully deleted'
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+});
 
 module.exports = router;
