@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const url = "https://worksend.herokuapp.com/assignments"
+const url = "https://worksend-develop.herokuapp.com/api/v1/assignments"
 
 test('Get all assignments', async () => {
   expect.assertions(1)
@@ -15,6 +15,6 @@ test('Get a specific assignment', async () => {
 
 test('Get all assignments of a specific class', async () => {
   expect.assertions(1)
-  var response = await fetch("https://worksend-develop.herokuapp.com/assignments/5bfd1f624aaa331862189391/all")
+  var response = await fetch("https://worksend-develop.herokuapp.com/api/v1/assignments/5bfd1f624aaa331862189391/all")
   expect(response.status).toEqual(200)
 })
